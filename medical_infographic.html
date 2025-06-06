@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اینفوگرافیک جامع رشته پزشکی در ایران</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- 
+    Narrative Plan:
+    1.  Hero Section: Introduce the journey of a doctor in Iran.
+    2.  The First Hurdle: Visualize the intense competition of the Konkur exam.
+    3.  The 7-Year Marathon: A flowchart of the four stages of medical education.
+    4.  Career Crossroads: Compare the paths of a General Practitioner (GP) vs. a Specialist.
+    5.  The Financial Reality: Chart comparing incomes across sectors and specializations.
+    6.  Core Principles: Visualize the four pillars of medical ethics.
+    7.  Conclusion: Summarize the demanding yet vital role of physicians.
+
+    Visualization Choices (NO SVG, NO Mermaid JS):
+    - Konkur Competition (Compare): Ordered Bar Chart using Chart.js (Canvas). Justification: Clearly compares the high ranks required.
+    - Education Path (Organize): HTML/CSS Flowchart using Tailwind. Justification: Visually represents a process effectively without SVG.
+    - GP Market Challenges (Inform): Iconography + Stats using HTML/CSS + Unicode. Justification: Quickly conveys concepts like saturation.
+    - Income Comparison (Compare): Grouped Bar Chart using Chart.js (Canvas). Justification: Best for comparing multiple categories (GP/Specialist) across multiple segments (Public/Private).
+    - Top Specializations (Compare): Horizontal Bar Chart using Chart.js (Canvas). Justification: Ideal for ranking and reading long category labels.
+    - Medical Ethics (Organize): Four-quadrant layout using HTML/CSS (Flexbox/Grid). Justification: Simple and clear organization of four core concepts.
+
+    Color Palette: Brilliant Blues (#003F5C, #34657F, #668BA4, #99B2C9, #CCE0EE)
+    -->
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 450px;
+        }
+        .rtl-grid {
+            direction: rtl;
+        }
+        .flow-item::after {
+            content: '▼';
+            color: #34657F;
+            font-size: 2rem;
+            line-height: 1;
+            margin-top: 0.5rem;
+            display: block;
+            text-align: center;
+        }
+        .flow-item:last-child::after {
+            content: '';
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-black mb-4" style="color: #003F5C;">سفر یک پزشک در ایران</h1>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto" style="color: #34657F;">نگاهی جامع به مسیر پر فراز و نشیب رشته پزشکی: از رقابت کنکور تا چالش‌های طبابت</p>
+        </header>
+
+        <main class="space-y-16">
+
+            <section id="konkur" class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-center mb-2" style="color: #003F5C;">خوان اول: ماراتن کنکور</h2>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8">ورود به رشته پزشکی در ایران نیازمند عبور از سد کنکور سراسری با کسب رتبه‌های بسیار بالا است. این رقابت فشرده، اولین و جدی‌ترین چالش در این مسیر طولانی است.</p>
+                <div class="grid md:grid-cols-2 gap-8 items-center rtl-grid">
+                    <div class="text-center md:text-right">
+                        <div class="mb-6">
+                            <span class="text-6xl font-black" style="color: #668BA4;">~۴۰٪</span>
+                            <h3 class="text-xl font-bold mt-2">تأثیر قطعی سوابق تحصیلی</h3>
+                            <p class="text-gray-600">نمرات امتحانات نهایی، نقشی سرنوشت‌ساز در رتبه نهایی داوطلبان نظام جدید ایفا می‌کند.</p>
+                        </div>
+                        <div>
+                            <span class="text-6xl font-black" style="color: #668BA4;">+۱۰</span>
+                            <h3 class="text-xl font-bold mt-2">برابر افزایش ظرفیت</h3>
+                            <p class="text-gray-600">پس از انقلاب، تعداد دانشکده‌ها و دانشجویان پزشکی به شدت افزایش یافت که بازار کار آینده را دگرگون کرد.</p>
+                        </div>
+                    </div>
+                    <div class="chart-container h-[400px] md:h-[450px]">
+                        <canvas id="konkurChart"></canvas>
+                    </div>
+                </div>
+                 <p class="text-center text-gray-500 mt-4 text-sm">نمودار بالا حدود آخرین رتبه‌های قبولی در دانشگاه‌های علوم پزشکی برتر (مانند ایران و تهران) را برای سهمیه‌های مختلف مناطق نشان می‌دهد. این ارقام نمایانگر رقابت شدید برای ورود به این دانشگاه‌ها است.</p>
+            </section>
+            
+            <section id="education-path" class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-3xl font-bold text-center mb-2" style="color: #003F5C;">مسیر ۷ ساله تحصیل: یک ماراتن علمی</h2>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-10">دوره پزشکی عمومی در ایران به طور متوسط ۷ سال طول می‌کشد و به چهار مرحله اصلی تقسیم می‌شود که به تدریج دانشجو را از تئوری به بالین می‌رساند.</p>
+                <div class="flex flex-col items-center">
+                    <div class="flow-item w-full md:w-2/3 lg:w-1/2 mb-4">
+                        <div class="bg-sky-100 border-r-4 border-sky-500 p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold mb-2">۱. علوم پایه (۲ سال)</h3>
+                            <p>آشنایی با مبانی علمی بدن انسان، ساختار و عملکرد آن. دروسی مانند آناتومی، فیزیولوژی و بیوشیمی پایه و اساس درک پزشکی را تشکیل می‌دهند.</p>
+                        </div>
+                    </div>
+                    <div class="flow-item w-full md:w-2/3 lg:w-1/2 mb-4">
+                        <div class="bg-teal-100 border-r-4 border-teal-500 p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold mb-2">۲. فیزیوپاتولوژی (۱ سال)</h3>
+                            <p>پلی میان علوم پایه و بالین؛ در این مرحله دانشجویان مکانیسم بیماری‌ها و تأثیر آن‌ها بر عملکرد بدن را می‌آموزند.</p>
+                        </div>
+                    </div>
+                    <div class="flow-item w-full md:w-2/3 lg:w-1/2 mb-4">
+                        <div class="bg-indigo-100 border-r-4 border-indigo-500 p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold mb-2">۳. کارآموزی (اکسترنی - ۲ سال)</h3>
+                            <p>ورود به بیمارستان و مشاهده بیماران و فرآیندهای درمانی از نزدیک، اما بدون دخالت مستقیم. این دوره تجربه بالینی اولیه را فراهم می‌کند.</p>
+                        </div>
+                    </div>
+                     <div class="flow-item w-full md:w-2/3 lg:w-1/2 mb-4">
+                        <div class="bg-rose-100 border-r-4 border-rose-500 p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-bold mb-2">۴. کارورزی (انترنی - ۱۸ ماه)</h3>
+                            <p>مرحله نهایی که در آن دانشجو به عنوان عضوی از تیم درمانی، مسئولیت مستقیم بیماران را تحت نظارت اساتید بر عهده می‌گیرد و پس از آن به عنوان پزشک عمومی فارغ‌التحصیل می‌شود.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="career-path" class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                 <h2 class="text-3xl font-bold text-center mb-2" style="color: #003F5C;">چهارراه شغلی: پزشک عمومی یا متخصص؟</h2>
+                 <p class="text-center text-gray-600 max-w-3xl mx-auto mb-10">پس از فارغ‌التحصیلی و گذراندن طرح اجباری نیروی انسانی (خدمت در مناطق محروم تا ۲ سال)، پزشکان با دو مسیر اصلی روبرو هستند که هر کدام چالش‌ها و فرصت‌های خاص خود را دارد.</p>
+                 <div class="grid md:grid-cols-2 gap-8 rtl-grid">
+                    <div class="border-2 border-gray-200 rounded-lg p-6">
+                        <h3 class="text-2xl font-bold text-center mb-4">مسیر پزشک عمومی (GP)</h3>
+                        <p class="mb-4">پزشکان عمومی اولین نقطه تماس بیماران با نظام سلامت هستند. با این حال، با افزایش تعداد فارغ‌التحصیلان، این مسیر با چالش‌های جدی روبرو شده است:</p>
+                        <ul class="space-y-3 list-inside list-disc">
+                            <li><span class="font-bold">اشباع بازار کار:</span> رقابت شدید برای یافتن موقعیت شغلی مناسب.</li>
+                            <li><span class="font-bold">"کارمندسازی":</span> تمایل سیستم به استخدام پزشکان با حقوق ثابت به جای فعالیت مستقل.</li>
+                             <li><span class="font-bold">تعرفه‌های نامتناسب:</span> عدم همخوانی درآمد با تورم و هزینه‌ها.</li>
+                        </ul>
+                    </div>
+                    <div class="border-2 border-gray-200 rounded-lg p-6">
+                        <h3 class="text-2xl font-bold text-center mb-4">مسیر تخصص (رزیدنتی)</h3>
+                        <p class="mb-4">بسیاری از پزشکان برای آینده شغلی بهتر، مسیر دشوار و طولانی رزیدنتی (۳ تا ۵ سال) را انتخاب می‌کنند. این مسیر منجر به درآمد و جایگاه اجتماعی بالاتری می‌شود.</p>
+                         <div class="chart-container h-[250px] md:h-[300px]">
+                            <canvas id="specializationChart"></canvas>
+                        </div>
+                        <p class="text-center text-gray-500 mt-4 text-sm">نمودار برخی از پرطرفدارترین گرایش‌های تخصصی را نشان می‌دهد.</p>
+                    </div>
+                 </div>
+            </section>
+
+            <section id="income" class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                 <h2 class="text-3xl font-bold text-center mb-2" style="color: #003F5C;">واقعیت‌های مالی: درآمد پزشکان</h2>
+                 <p class="text-center text-gray-600 max-w-3xl mx-auto mb-10">درآمد پزشکان در ایران به شدت به تخصص، سابقه و محل فعالیت (دولتی یا خصوصی) بستگی دارد. تعرفه‌های پزشکی در سال ۱۴۰۴ با افزایش ۴۶ درصدی همراه بود تا بخشی از شکاف درآمدی با تورم را جبران کند.</p>
+                <div class="chart-container h-[450px] md:h-[500px]">
+                    <canvas id="incomeChart"></canvas>
+                </div>
+                 <p class="text-center text-gray-500 mt-4 text-sm">این نمودار مقایسه‌ای از تعرفه یک ویزیت در بخش‌های مختلف برای سطوح گوناگون پزشکی در سال ۱۴۰۴ است. درآمد نهایی به تعداد بیماران ویزیت شده بستگی دارد.</p>
+            </section>
+            
+            <section id="ethics" class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                 <h2 class="text-3xl font-bold text-center mb-2" style="color: #003F5C;">قطب‌نمای حرفه‌ای: اصول اخلاق پزشکی</h2>
+                 <p class="text-center text-gray-600 max-w-2xl mx-auto mb-10">فراتر از دانش فنی، تعهد به اصول اخلاقی، سنگ بنای اعتماد جامعه به پزشکان است. این چهار اصل، راهنمای عمل هر پزشک در مواجهه با بیمار است.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                    <div class="bg-gray-50 p-6 rounded-lg">
+                        <div class="text-5xl mb-4">🤝</div>
+                        <h3 class="text-xl font-bold mb-2">احترام به خودمختاری</h3>
+                        <p>بیمار حق دارد در مورد درمان خود آگاهانه تصمیم بگیرد و پزشک موظف به ارائه اطلاعات کامل و احترام به انتخاب اوست.</p>
+                    </div>
+                     <div class="bg-gray-50 p-6 rounded-lg">
+                        <div class="text-5xl mb-4">❤️</div>
+                        <h3 class="text-xl font-bold mb-2">سودرسانی</h3>
+                        <p>پزشک باید همیشه منافع بیمار را در اولویت قرار دهد و برای بهبود حال او تلاش کند.</p>
+                    </div>
+                     <div class="bg-gray-50 p-6 rounded-lg">
+                        <div class="text-5xl mb-4">🛡️</div>
+                        <h3 class="text-xl font-bold mb-2">عدم اضرار</h3>
+                        <p>پزشک باید از هرگونه اقدامی که منجر به آسیب غیرضروری به بیمار می‌شود، پرهیز کند. "اول، آسیب نرسان".</p>
+                    </div>
+                     <div class="bg-gray-50 p-6 rounded-lg">
+                        <div class="text-5xl mb-4">⚖️</div>
+                        <h3 class="text-xl font-bold mb-2">عدالت</h3>
+                        <p>ارائه خدمات درمانی باید عادلانه و بدون تبعیض بر اساس نژاد، جنسیت، وضعیت اقتصادی یا نوع بیماری باشد.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const FONT_COLOR = '#003F5C';
+        const GRID_COLOR = '#CCE0EE';
+
+        function wrapLabel(label, maxWidth) {
+            if (typeof label !== 'string' || label.length <= maxWidth) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxWidth) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            } else {
+                return label;
+            }
+        };
+        
+        const sharedChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: FONT_COLOR,
+                        font: {
+                            family: "'Vazirmatn', sans-serif",
+                            size: 14,
+                        }
+                    }
+                },
+                tooltip: {
+                    rtl: true,
+                    titleFont: { family: "'Vazirmatn', sans-serif" },
+                    bodyFont: { family: "'Vazirmatn', sans-serif" },
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: FONT_COLOR,
+                        font: { family: "'Vazirmatn', sans-serif", size: 12 },
+                    },
+                    grid: { color: GRID_COLOR }
+                },
+                y: {
+                    ticks: {
+                        color: FONT_COLOR,
+                        font: { family: "'Vazirmatn', sans-serif", size: 12 },
+                    },
+                    grid: { color: GRID_COLOR }
+                }
+            }
+        };
+
+        const konkurCtx = document.getElementById('konkurChart').getContext('2d');
+        new Chart(konkurCtx, {
+            type: 'bar',
+            data: {
+                labels: ['منطقه ۱', 'منطقه ۲', 'منطقه ۳'],
+                datasets: [{
+                    label: 'حدود آخرین رتبه قبولی در دانشگاه‌های برتر',
+                    data: [350, 950, 1300],
+                    backgroundColor: ['#668BA4', '#34657F', '#003F5C'],
+                    borderColor: '#FFFFFF',
+                    borderWidth: 2,
+                    borderRadius: 5,
+                }]
+            },
+            options: {
+                ...sharedChartOptions,
+                indexAxis: 'y',
+                 scales: {
+                    x: { ...sharedChartOptions.scales.x, title: { display: true, text: 'رتبه در سهمیه', color: FONT_COLOR, font: { family: "'Vazirmatn', sans-serif", size: 14 }} },
+                    y: { ...sharedChartOptions.scales.y }
+                },
+                plugins: {
+                    ...sharedChartOptions.plugins,
+                    legend: { display: false }
+                }
+            }
+        });
+
+        const specializationCtx = document.getElementById('specializationChart').getContext('2d');
+        const specLabels = [
+            'چشم‌پزشکی', 'رادیولوژی', 'پوست', 'ارتوپدی', 'قلب و عروق', 'جراحی مغز و اعصاب'
+        ].map(label => wrapLabel(label, 16));
+        new Chart(specializationCtx, {
+            type: 'bar',
+            data: {
+                labels: specLabels,
+                datasets: [{
+                    label: 'میزان محبوبیت (نمایشی)',
+                    data: [95, 92, 90, 88, 85, 82],
+                    backgroundColor: '#34657F',
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                ...sharedChartOptions,
+                indexAxis: 'y',
+                plugins: { ...sharedChartOptions.plugins, legend: { display: false } },
+                 scales: {
+                    x: { ...sharedChartOptions.scales.x, suggestedMin: 70 },
+                    y: { ...sharedChartOptions.scales.y }
+                }
+            }
+        });
+
+        const incomeCtx = document.getElementById('incomeChart').getContext('2d');
+        const incomeLabels = [
+            'پزشک عمومی', wrapLabel('پزشک متخصص', 16), wrapLabel('پزشک فوق تخصص', 16)
+        ];
+        new Chart(incomeCtx, {
+            type: 'bar',
+            data: {
+                labels: incomeLabels,
+                datasets: [{
+                    label: 'بخش دولتی',
+                    data: [86.8, 120.7, 147.9],
+                    backgroundColor: '#668BA4',
+                    borderRadius: 5
+                }, {
+                    label: 'بخش خصوصی',
+                    data: [230.1, 320.6, 385.1],
+                    backgroundColor: '#003F5C',
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                ...sharedChartOptions,
+                scales: {
+                    x: { ...sharedChartOptions.scales.x },
+                    y: { ...sharedChartOptions.scales.y, title: { display: true, text: 'هزار تومان', color: FONT_COLOR, font: { family: "'Vazirmatn', sans-serif", size: 14 }} }
+                },
+                plugins: {
+                    ...sharedChartOptions.plugins,
+                    tooltip: {
+                        ...sharedChartOptions.plugins.tooltip,
+                        callbacks: {
+                            ...sharedChartOptions.plugins.tooltip.callbacks,
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('fa-IR').format(context.parsed.y) + ' هزار تومان';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
