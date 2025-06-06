@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اینفوگرافیک مقایسه‌ای: دانشگاه تهران در برابر دانشگاه صنعتی شریف</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 40vh;
+            width: 100%;
+            max-width: 600px;
+            max-height: 400px;
+        }
+        .section-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .swot-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        .swot-cell {
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        .strength { background-color: #e6fffa; border-left: 5px solid #38b2ac; }
+        .weakness { background-color: #fff5f5; border-left: 5px solid #f56565; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <header class="bg-white shadow-lg py-8 text-center">
+        <h1 class="text-4xl md:text-5xl font-black" style="color: #003F5C;">دوئل غول‌های آکادمیک ایران</h1>
+        <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto px-4">تحلیل بصری و مقایسه‌ای جامع بین دانشگاه تهران، «دانشگاه مادر»، و دانشگاه صنعتی شریف، «قطب نخبگان فنی»</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="intro" class="section-card">
+            <h2 class="text-3xl font-bold text-center mb-6" style="color: #003F5C;">نگاهی گذرا: دو هویت، یک تاریخ پرافتخار</h2>
+            <p class="text-center text-gray-700 mb-8">دانشگاه تهران به عنوان یک نهاد جامع و فراگیر، و دانشگاه صنعتی شریف با مأموریتی تخصصی برای توسعه صنعتی، دو مسیر متفاوت از برتری را در آموزش عالی ایران نمایندگی می‌کنند. این بخش آمارهای کلیدی دو دانشگاه را در کنار هم قرار می‌دهد.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+                <div class="p-6 rounded-lg" style="background-color: #e0f2fe;">
+                    <h3 class="text-2xl font-bold mb-2" style="color: #374C80;">دانشگاه تهران</h3>
+                    <p class="text-6xl font-black my-4" style="color: #374C80;">۱۳۱۳</p>
+                    <p class="text-lg font-semibold">سال تأسیس</p>
+                    <p class="text-sm text-gray-600 mt-2">نماد آموزش عالی و دانشگاه مادر ایران</p>
+                </div>
+                <div class="p-6 rounded-lg" style="background-color: #fce7f3;">
+                    <h3 class="text-2xl font-bold mb-2" style="color: #BC5090;">دانشگاه صنعتی شریف</h3>
+                    <p class="text-6xl font-black my-4" style="color: #BC5090;">۱۳۴۴</p>
+                    <p class="text-lg font-semibold">سال تأسیس</p>
+                    <p class="text-sm text-gray-600 mt-2">پیشرو در تربیت نخبگان فنی و مهندسی</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="rankings" class="section-card">
+            <h2 class="text-3xl font-bold text-center mb-6" style="color: #003F5C;">جایگاه در عرصه جهانی</h2>
+             <p class="text-center text-gray-700 mb-8">در عرصه جهانی، هر دو دانشگاه می‌درخشند، اما در حوزه‌های متفاوتی. این نمودار رتبه‌بندی‌های کلیدی را مقایسه می‌کند و برتری نسبی شریف در رده‌بندی QS و تخصص آن در علوم کامپیوتر را نشان می‌دهد، در حالی که تهران در رتبه‌بندی‌های جامع مانند URAP پیشتاز است.</p>
+            <div class="chart-container">
+                <canvas id="qsRankingChart"></canvas>
+            </div>
+        </section>
+        
+        <section id="fields" class="section-card">
+            <h2 class="text-3xl font-bold text-center mb-6" style="color: #003F5C;">گستره در برابر تمرکز: سبد آموزشی</h2>
+            <p class="text-center text-gray-700 mb-8">تفاوت اصلی دو دانشگاه در مدل آکادمیک آن‌ها نهفته است. دانشگاه تهران با پوشش تقریباً تمام حوزه‌های دانش، یک دانشگاه جامع است، در حالی که شریف منابع خود را بر روی مهندسی و علوم پایه متمرکز کرده است. این نمودارها این تفاوت استراتژیک را به تصویر می‌کشند.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold text-center mb-4" style="color: #374C80;">دانشکده‌های دانشگاه تهران</h3>
+                    <div class="chart-container h-72 md:h-80">
+                        <canvas id="tehranFacultiesChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-center mb-4" style="color: #BC5090;">دانشکده‌های دانشگاه صنعتی شریف</h3>
+                    <div class="chart-container h-72 md:h-80">
+                        <canvas id="sharifFacultiesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="rigor" class="section-card">
+            <h2 class="text-3xl font-bold text-center mb-6" style="color: #003F5C;">فرهنگ آکادمیک: مهارت‌محوری در برابر غربالگری</h2>
+             <p class="text-center text-gray-700 mb-8">سخت‌گیری آکادمیک در هر دو دانشگاه بالاست، اما فلسفه آن متفاوت است. در تهران، تاکید بر توسعه مهارت در یک محیط همکاری‌محور است. در شریف، فشار شدید آکادمیک، به ویژه در دروس پایه، به عنوان یک مکانیزم "فیلتر" برای انتخاب سرآمدترین دانشجویان عمل می‌کند.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                <div class="p-6 rounded-lg border-l-8" style="border-color: #374C80; background-color: #e0f2fe;">
+                    <h3 class="text-xl font-bold mb-2" style="color: #374C80;">دانشگاه تهران: رشد جمعی</h3>
+                    <p class="text-gray-700">"معدل خیلی ملاک نیست، مهارت دانشجو اهمیت دارد." این جمله، فرهنگ حاکم بر دانشگاه تهران را خلاصه می‌کند. پروژه‌های گروهی و جو صمیمی، رقابت فردی را کاهش داده و بر توسعه جامع توانمندی‌ها تاکید دارد.</p>
+                </div>
+                <div class="p-6 rounded-lg border-l-8" style="border-color: #BC5090; background-color: #fce7f3;">
+                    <h3 class="text-xl font-bold mb-2" style="color: #BC5090;">دانشگاه صنعتی شریف: آزمون بقا</h3>
+                    <p class="text-gray-700">با نرخ مردودی نزدیک به ۵۰٪ در درسی مانند "ریاضی ۲" برای ورودی‌های جدید، شریف به سخت‌گیری شدید شهرت دارد. این فشار، تضمین می‌کند که تنها دانشجویان با بالاترین تاب‌آوری و توانایی علمی باقی بمانند.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="research" class="section-card">
+            <h2 class="text-3xl font-bold text-center mb-6" style="color: #003F5C;">موتور نوآوری: حجم پژوهش در برابر تاثیر کاربردی</h2>
+             <p class="text-center text-gray-700 mb-8">دانشگاه تهران حجم عظیمی از مقالات علمی را در حوزه‌های متنوع تولید می‌کند که نشان‌دهنده نقش آن به عنوان یک دانشگاه جامع پژوهش‌محور است. در مقابل، دستاوردهای شریف بیشتر به سمت نوآوری‌های فناورانه ملموس، ثبت اختراعات و حل چالش‌های صنعتی متمایل است.</p>
+            <div class="chart-container">
+                <canvas id="researchOutputChart"></canvas>
+            </div>
+        </section>
+
+        <section id="swot" class="section-card">
+            <h2 class="text-3xl font-bold text-center mb-6" style="color: #003F5C;">انتخاب مسیر: کدام دانشگاه برای شما مناسب است؟</h2>
+             <p class="text-center text-gray-700 mb-8">انتخاب بین این دو دانشگاه به اهداف، علایق و شخصیت شما بستگی دارد. این جدول به طور خلاصه نقاط قوت و ضعف کلیدی هر دانشگاه را بر اساس گزارش جامع ارائه شده، مرور می‌کند تا به شما در تصمیم‌گیری کمک کند.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-bold text-center mb-4" style="color: #374C80;">دانشگاه تهران</h3>
+                    <div class="swot-grid">
+                        <div class="swot-cell strength">
+                            <h4 class="font-bold mb-2">نقاط قوت</h4>
+                            <ul class="list-disc list-inside text-sm space-y-1">
+                                <li>تنوع بی‌نظیر رشته‌ها</li>
+                                <li>جایگاه برتر به عنوان دانشگاه جامع</li>
+                                <li>امکانات گسترده و بزرگترین کتابخانه کشور</li>
+                                <li>محیط شهری و دسترسی آسان</li>
+                                <li>فرهنگ همکاری‌محور و مهارت‌گرا</li>
+                            </ul>
+                        </div>
+                        <div class="swot-cell weakness">
+                            <h4 class="font-bold mb-2">نقاط ضعف</h4>
+                            <ul class="list-disc list-inside text-sm space-y-1">
+                                <li>سخت‌گیری بالا در امتحانات</li>
+                                <li>حجم زیاد منابع درسی</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-center mb-4" style="color: #BC5090;">دانشگاه صنعتی شریف</h3>
+                    <div class="swot-grid">
+                        <div class="swot-cell strength">
+                            <h4 class="font-bold mb-2">نقاط قوت</h4>
+                            <ul class="list-disc list-inside text-sm space-y-1">
+                                <li>جذب نخبگان برتر کنکور</li>
+                                <li>برتری در مهندسی و علوم کامپیوتر</li>
+                                <li>ارتباط قوی با صنعت و درآمدزایی</li>
+                                <li>شبکه فارغ‌التحصیلان قدرتمند</li>
+                                <li>تمرکز بر پژوهش کاربردی و نوآوری</li>
+                            </ul>
+                        </div>
+                        <div class="swot-cell weakness">
+                            <h4 class="font-bold mb-2">نقاط ضعف</h4>
+                            <ul class="list-disc list-inside text-sm space-y-1">
+                                <li>سخت‌گیری شدید و نرخ مردودی بالا</li>
+                                <li>محدودیت در تنوع رشته‌ها (غیرفنی)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-6 bg-white mt-8">
+        <p class="text-gray-600">اینفوگرافیک طراحی شده بر اساس گزارش تحلیلی جامع.</p>
+    </footer>
+
+    <script>
+        const tooltipCallback = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            } else {
+                              return label;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        
+        const wrapLabel = (label) => {
+            if (label.length <= 16) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).length > 16 && currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = currentLine ? currentLine + ' ' + word : word;
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        };
+
+        const tehranColor = '#374C80';
+        const sharifColor = '#BC5090';
+        const tehranSecondaryColor = '#FFA600';
+        const sharifSecondaryColor = '#EF5675';
+
+        new Chart(document.getElementById('qsRankingChart'), {
+            type: 'bar',
+            data: {
+                labels: ['رتبه جهانی QS 2025', 'رتبه مهندسی تایمز', ['رتبه علوم کامپیوتر', 'تایمز'], 'رتبه جهانی URAP'],
+                datasets: [
+                    {
+                        label: 'دانشگاه تهران',
+                        data: [368, 225, 350, 170],
+                        backgroundColor: tehranColor,
+                        borderColor: tehranColor,
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'دانشگاه صنعتی شریف',
+                        data: [342, 225, 188, 498],
+                        backgroundColor: sharifColor,
+                        borderColor: sharifColor,
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        reverse: true,
+                        title: {
+                            display: true,
+                            text: 'رتبه (کمتر بهتر است)'
+                        }
+                    }
+                },
+                plugins: {
+                    ...tooltipCallback.plugins,
+                    title: {
+                        display: true,
+                        text: 'مقایسه رتبه‌بندی‌های جهانی'
+                    },
+                    subtitle: {
+                        display: true,
+                        text: 'رتبه در سیستم‌های مختلف رنکینگ بین‌المللی'
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('tehranFacultiesChart'), {
+            type: 'doughnut',
+            data: {
+                labels: [wrapLabel('علوم انسانی و اجتماعی'), wrapLabel('فنی و مهندسی'), wrapLabel('علوم پایه'), wrapLabel('هنر و معماری'), wrapLabel('کشاورزی و منابع طبیعی'), 'سایر'],
+                datasets: [{
+                    label: 'توزيع دانشکده‌ها',
+                    data: [30, 25, 15, 10, 10, 10],
+                    backgroundColor: [tehranColor, tehranSecondaryColor, '#0077b6', '#7f5539', '#52b788', '#adb5bd'],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                     ...tooltipCallback.plugins,
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
+
+        new Chart(document.getElementById('sharifFacultiesChart'), {
+            type: 'doughnut',
+            data: {
+                labels: [wrapLabel('مهندسی'), wrapLabel('علوم پایه'), wrapLabel('مدیریت و اقتصاد'), 'سایر'],
+                datasets: [{
+                    label: 'توزيع دانشکده‌ها',
+                    data: [75, 15, 5, 5],
+                    backgroundColor: [sharifColor, sharifSecondaryColor, '#ff8fab', '#e0aaff'],
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    ...tooltipCallback.plugins,
+                    legend: {
+                        position: 'bottom',
+                    }
+                }
+            }
+        });
+        
+        new Chart(document.getElementById('researchOutputChart'), {
+            type: 'bar',
+            data: {
+                labels: [['مجموع مقالات ISI و داخلی'], 'اختراعات ثبت شده'],
+                datasets: [
+                    {
+                        label: 'دانشگاه تهران',
+                        data: [124549, 0],
+                        backgroundColor: tehranColor,
+                    },
+                    {
+                        label: 'دانشگاه صنعتی شریف',
+                        data: [37612, 1024],
+                        backgroundColor: sharifColor,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                 scales: {
+                    y: {
+                        type: 'logarithmic',
+                        title: {
+                            display: true,
+                            text: 'تعداد (مقیاس لگاریتمی)'
+                        }
+                    }
+                },
+                plugins: {
+                    ...tooltipCallback.plugins,
+                    title: {
+                        display: true,
+                        text: 'مقایسه خروجی‌های پژوهشی و نوآوری'
+                    },
+                     subtitle: {
+                        display: true,
+                        text: 'دانشگاه تهران در حجم مقالات و شریف در ثبت اختراعات پیشتاز است'
+                    }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>
